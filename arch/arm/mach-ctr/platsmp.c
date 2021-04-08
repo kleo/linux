@@ -35,13 +35,12 @@ static int ctr_smp_boot_secondary(unsigned int cpu,
 			       sizeof(phys_addr_t));
 
 	/* Set CPU boot address */
-	writel(virt_to_phys(ctr_secondary_startup),
-		boot_addr);
+	writel(virt_to_phys(ctr_secondary_startup), boot_addr);
 
 	iounmap(boot_addr);
 
 	/* Trigger event */
-	sev();
+	dsb_sev();
 	return 0;
 }
 

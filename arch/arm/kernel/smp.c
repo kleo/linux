@@ -704,7 +704,7 @@ static irqreturn_t ipi_handler(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
-void smp_cross_call(const struct cpumask *target, unsigned int ipinr)
+static void smp_cross_call(const struct cpumask *target, unsigned int ipinr)
 {
 	trace_ipi_raise_rcuidle(target, ipi_types[ipinr]);
 	__ipi_send_mask(ipi_desc[ipinr], target);

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
- *  linux/arch/arm/mach-nintendo3ds/headsmp.S
+ *  linux/arch/arm/mach-ctr/headsmp.S
  *
  *  Cloned from linux/arch/arm/plat-versatile/headsmp.S
  *

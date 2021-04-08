@@ -14,6 +14,7 @@
 #else
 #define IO_ADDRESS(x)		(x)
 #endif
+
 #define __io_address(n)		IOMEM(IO_ADDRESS(n))
 
 #endif
