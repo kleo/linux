@@ -9,12 +9,14 @@ jobs:
     - run: |
         sudo apt-get update && sudo apt-get install -y gcc-arm-linux-gnueabi binutils build-essential git flex bison libssl-dev bc axel libgmp-dev libmpc-dev
     - run: axel https://github.com/ClangBuiltLinux/boot-utils/raw/main/images/arm/rootfs.cpio.zst && zstd -d rootfs.cpio.zst && gzip rootfs.cpio && rm rootfs.cpio.zst
-    - run: ls -la && pwd
     - run: make nintendo3ds_defconfig all
       env:
         ARCH: arm
         CROSS_COMPILE: arm-linux-gnueabi-
     - uses: actions/upload-artifact@v2
       with:
-        name: firm_linux_loader
-        path: ./firm_linux_loader.firm
+        name: linux
+        path: |
+          ./arch/arm/boot/zImage
+          ./arch/arm/boot/dts/nintendo3ds_ctr.dtb
+          ./arch/arm/boot/dts/nintendo3ds_ktr.dtb
