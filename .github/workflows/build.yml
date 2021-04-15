@@ -8,12 +8,13 @@ jobs:
     - uses: actions/checkout@v2
     - run: |
         sudo apt-get update && sudo apt-get install -y gcc-arm-linux-gnueabi binutils build-essential git flex bison libssl-dev bc axel libgmp-dev libmpc-dev
-      env:
-        ARCH: arm
-        CROSS_COMPILE: arm-linux-gnueabi-
+
     - run: axel https://github.com/ClangBuiltLinux/boot-utils/raw/main/images/arm/rootfs.cpio.zst && zstd -d rootfs.cpio.zst && gzip rootfs.cpio && rm rootfs.cpio.zst
     - run: ls -la && pwd
     - run: make nintendo3ds_defconfig all
+        env:
+          ARCH: arm
+          CROSS_COMPILE: arm-linux-gnueabi-
     - uses: actions/upload-artifact@v2
       with:
         name: firm_linux_loader
