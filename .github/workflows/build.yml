@@ -6,9 +6,9 @@ on:
 
 jobs:
   build:
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
     steps:
-    - uses: "actions/checkout@v2"
+    - uses: "actions/checkout@v4"
     - run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
     - run: |
         sudo apt-get update && sudo apt-get install -y gcc-arm-linux-gnueabi binutils build-essential git flex bison libssl-dev bc axel libgmp-dev libmpc-dev jq
@@ -18,13 +18,22 @@ jobs:
       env:
         ARCH: "arm"
         CROSS_COMPILE: "arm-linux-gnueabi-"
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: true
-        title: "Development build ${{ env.SHORT_SHA }}"
-        files: |
-          arch/arm/boot/zImage
-          arch/arm/boot/dts/nintendo3ds_ctr.dtb
-          arch/arm/boot/dts/nintendo3ds_ktr.dtb
+
+  release:
+    name: Create Github Release
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Generate release tag
+        id: tag
+        run: |
+            echo "RELEASE_TAG=Development build ${{ env.SHORT_SHA }}" >> "$GITHUB_OUTPUT"
+      
+      - uses: actions/download-artifact@v4
+      
+      - uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          tag_name: ${{ steps.tag.outputs.RELEASE_TAG }}
+          files: |
+            */*
