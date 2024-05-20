@@ -19,6 +19,14 @@ jobs:
         ARCH: "arm"
         CROSS_COMPILE: "arm-linux-gnueabi-"
 
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        path: |
+          arch/arm/boot/zImage
+          arch/arm/boot/dts/nintendo3ds_ctr.dtb
+          arch/arm/boot/dts/nintendo3ds_ktr.dtb
+
   release:
     name: Create Github Release
     needs: build
@@ -27,13 +35,15 @@ jobs:
       - name: Generate release tag
         id: tag
         run: |
-            echo "RELEASE_TAG=Development build ${{ env.SHORT_SHA }}" >> "$GITHUB_OUTPUT"
+            echo "RELEASE_TAG=Development build ${{ env.SHORT_SHA }}" >> "$GITHUB_ENV"
       
       - uses: actions/download-artifact@v4
       
       - uses: softprops/action-gh-release@v2
         with:
           prerelease: true
-          tag_name: ${{ steps.tag.outputs.RELEASE_TAG }}
+          tag_name: ${{ env.RELEASE_TAG }}
           files: |
-            */*
+            arch/arm/boot/zImage
+            arch/arm/boot/dts/nintendo3ds_ctr.dtb
+            arch/arm/boot/dts/nintendo3ds_ktr.dtb
