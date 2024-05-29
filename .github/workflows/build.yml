@@ -47,6 +47,6 @@ jobs:
           prerelease: true
           tag_name: ${{ env.RELEASE_TAG }}
           files: |
-            arch/arm/boot/zImage
-            arch/arm/boot/dts/nintendo3ds_ctr.dtb
-            arch/arm/boot/dts/nintendo3ds_ktr.dtb
+            artifact/zImage
+            artifact/dts/nintendo3ds_ctr.dtb
+            artifact/dts/nintendo3ds_ktr.dtb
